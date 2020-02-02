@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript" src="/asserts/js/jquery.js"></script>
+    <script type="text/javascript" src="/asserts/js/echarts.min.js"></script>
+    <script type="text/javascript" src="/asserts/js/echarts.common.js"></script>
+    <script type="text/javascript" src="/asserts/js/macarons.js"></script>
+    <script type="text/javascript" src="/asserts/js/dark.js"></script>
+
+    <link href="/asserts/bootstrap3dist/css/bootstrap.css" rel="stylesheet" media="screen">
+    <title>体重</title>
+</head>
+<script type="text/javascript" th:inline="javascript">
+    var option
+    var myChart
+    var objdto          //后台传来到前端经转换的对象数据
+
+    $(function () {
+        initChart()
+        //基于准备好的dom，初始化echarts实例
+        myChart = echarts.init(document.getElementById('main'),'dark');
+        //myChart.setOption(option)
+
+        var msg = [[${mb}]];                //这里取得后端传过来的json
+        objdto = JSON.parse(msg);       //这里将取得json转成js对象
+        initHelp(objdto);                    //这个是后端传值生成图表
+
+//        myChart.on('legendselectchanged', function(params) {
+//            if(legendselectchanged(params)){
+//                legendselectchanged(params);        //下面有个自定义的legendselectchanged(params)方法
+//                this.setOption(option);
+//            }else{
+//                console.log("属于前四位");
+//            }
+//        });
+//        initechars();                     //这里需要前端请求后拿值 这个方法负责请求  是通过页面中转方法取请求获得参数后生成图表
+    })
+
+    /**
+     * 监听变换y轴数据时控制y轴的显示和隐藏
+     * @param params    点击事件传来的参数
+     */
+//    function legendselectchanged(params) {
+//        console.log("legend发生改变");var data = objdto.data;
+//        var yarr = [];
+//        for(var i=0; i < option.yAxis.length; i++){if(i<=3){
+//            yarr.push(option.yAxis[i].name);
+//        }else{break;}}
+//        //如果改变的legend是前四位进入一下逻辑
+//        if(yarr.indexOf(params.name) == -1){
+//            var fstaname = data.yaxisList[3].yname;
+//            for(var i=0;i<data.yaxisList.length;i++){
+//                if(data.yaxisList[i].yname==params.name){
+//                    var tem = data.yaxisList[i];
+//                    for(var j=i;j>0;j--){
+//                        data.yaxisList[j] = data.yaxisList[j-1];
+//                    }
+//                    data.yaxisList[0] = tem
+//                    data.yaxisList[0].position='left';
+//                    data.yaxisList[0].offset=0;
+//                    break;
+//                }
+//            }
+//            option.yAxis=inityxisArray(data);
+//            console.log(fstaname);
+//            //下面是控制点击显示的leng变化
+////            for(var strname in option.legend.selected){
+////                option.legend.selected[strname] = false
+////                break;
+////            }
+//            option.legend.selected[params.name] = true;
+//            option.legend.selected[fstaname] = false;
+//            console.log(params);
+////            option.legend.selected[params.name] = !option.legend.selected[params.name];
+//            return true
+//        }
+//        return false;
+//    }
+
+    /**
+     * 初始化y轴
+     * @param data
+     */
+    function inityxisArray(data) {
+        var yxisArray = [];
+        var yaxisList = data.yaxisList
+        var offset = 0;
+        for(var i =0;i < data.yaxisList.length; i++){
+            var  yaxis = {};
+            yaxis.position = yaxisList[i].position;
+            yaxis.axisLabel = {formatter : '{value} '+yaxisList[i].axisLabel};
+            //是否颜色区分
+            if(yaxisList[i].splitArea){yaxis.splitArea = {show : yaxisList[i].splitArea};}
+            //是否网格
+            if(yaxisList[i].splitLine){yaxis.splitLine = {show : yaxisList[i].splitArea};}
+            yaxis.type = yaxisList[i].ytype;
+            //默认前4个显示y坐标轴 和 y轴名字
+            if(i<=3){
+                yaxis.name = yaxisList[i].yname;            //控制y轴名字显示
+                yaxis.axisLine = {show : true};          //控制是否显示y轴
+            }else{
+//                yaxis.name = yaxisList[i].yname;            //控制y轴名字显示
+                yaxis.axisLine = {show : false};          //控制是否显示y轴
+            }
+
+            yaxis.offset = yaxisList[i].offset+offset;
+            i>2?offset = offset + 70:0;                 //第二次开始设置y轴间距
+            yxisArray.push(yaxis);
+        }
+        return yxisArray;
+    }
+
+    function initechars() {
+//        if(window.jQuery || window.$){
+//            alert("引入jquery")
+//        }else{
+//            alert("没有引入jquery")
+//        }
+        $.ajax({
+            type: "post",
+            url: "/initEchars",
+//            url: "/invincibleData",
+            data: {},
+            success: function (dto) {
+                console.log(dto)
+                var data = dto.data;
+                initChart()
+                  option.title.text=data.text;
+                   //是否直接数据显示
+                   if(data.dataViewFlag){option.toolbox.feature.dataView.readOnly=true;}
+//                   console.log(data.magicTypelist.length);
+                   //工具栏是否为空
+                   if(data.magicTypelist!=undefined && data.magicTypelist.length>0){
+                       option.toolbox.feature.magicType.type=data.magicTypelist;
+                   }
+                    option.toolbox.feature.saveAsImage.pixelRatio=2;             //保存高清附件
+                   //选中数据是否显示的list是否为空
+                    if(data.legendDataNamelist!=undefined && data.legendDataNamelist.length>0){
+                        option.legend={data:data.legendDataNamelist};
+                    }
+                    if(data.dataZoomFlag){
+                        var typeob1 = {};var typeob2 = {};
+                        typeob1.type='inside';   typeob2.type='slider';
+                        var dataZoomArray = [];
+                        dataZoomArray.push(typeob1);
+                        dataZoomArray.push(typeob2);
+                        option.dataZoom=dataZoomArray;
+                    }
+                    var xaxisArray = [];
+                    var xaxisList = data.xaxisList
+                    for(var i in xaxisList){
+                        var  xaxis = {};
+                        xaxis.name = xaxisList[i].unitName;
+                        xaxis.data = xaxisList[i].xdata;
+                        console.log(xaxisList[i]);
+                        console.log(xaxisList[i].rotate);
+                        xaxis.axisLabel = {rotate : xaxisList[i].rotate};
+                        xaxis.splitLine = {show : xaxisList[i].splitLine};
+                        xaxis.splitArea = {show : xaxisList[i].splitArea};
+                        xaxis.nameTextStyle = {padding : [58,0,0,0]};
+                        xaxisArray.push(xaxis)
+//                        console.log(xaxisArray);
+                    }
+                    option.xAxis=xaxisArray;
+
+                    var yxisArray = [];
+                    var yaxisList = data.yaxisList
+                    var offset = 0;
+                    for(var i in data.yaxisList){
+                        var  yaxis = {};
+                        yaxis.position = yaxisList[i].position;
+                        yaxis.axisLabel = {formatter : '{value} '+yaxisList[i].axisLabel};
+                        //是否颜色区分
+                        if(yaxisList[i].splitArea){yaxis.splitArea = {show : yaxisList[i].splitArea};}
+                        //是否网格
+                        if(yaxisList[i].splitLine){yaxis.splitLine = {show : yaxisList[i].splitArea};}
+                        yaxis.type = yaxisList[i].ytype;
+                        yaxis.name = yaxisList[i].yname;
+                        yaxis.offset = yaxisList[i].offset+offset;
+                        i>2?offset = offset + 70:0;                 //第二次开始设置y轴间距
+                        yxisArray.push(yaxis)
+                    }
+                    option.yAxis=yxisArray;
+
+                    var seriesArray = [];
+                    var seriesList = data.seriesList
+                    for(var i in data.seriesList){
+                        var  series = {};
+                        series.name = seriesList[i].dataName;
+                        series.data = seriesList[i].data;
+                        series.type = seriesList[i].seriestype;
+                        //是否自动显示最大最小值
+                        if(seriesList[i].markPointflag){
+                            var datamax = {};var datamin = {};
+                            datamax.type='max';   datamin.type='min';
+                            datamax.name='最大值';   datamin.name='最小值';
+                            var markPointDataArray = [];
+                            markPointDataArray.push(datamax);
+                            markPointDataArray.push(datamin);
+                            series.markPoint = {data : markPointDataArray};
+                        }
+                        //是否自动显示平均值
+                        if(seriesList[i].markLineflag){
+                            var avg = {};
+                            avg.type='average';
+                            avg.name='平均值';
+                            var avgArray = [];
+                            avgArray.push(avg);
+                            series.markLine = {data : avgArray};
+                        }
+                        //于y轴对应的index
+                        series.yAxisIndex=seriesList[i].yaxisIndex;
+                        seriesArray.push(series);
+                    }
+                    option.series=seriesArray;
+                    console.log(option);
+                myChart.setOption(option);
+            }
+        });
+    }
+
+    function initHelp(dto) {
+        console.log(dto)
+        var data = dto.data;
+        initChart()
+        var flag = false;
+        if(data.seriesList[0].seriestype=='pie'){
+            flag=true;
+        }
+
+        option.title.text=data.text;
+        //是否直接数据显示
+        if(data.dataViewFlag){option.toolbox.feature.dataView.readOnly=true;}
+//                   console.log(data.magicTypelist.length);
+        //工具栏是否为空
+        if(data.magicTypelist!=undefined && data.magicTypelist.length>0){
+            option.toolbox.feature.magicType.type=data.magicTypelist;
+        }
+        option.toolbox.feature.saveAsImage.pixelRatio=2;             //保存高清附件
+        //选中数据是否显示的list是否为空
+        if(data.legendDataNamelist!=undefined && data.legendDataNamelist.length>0){
+            option.legend={data:data.legendDataNamelist};
+            var selected = {};                         //栏目对象
+            console.log(data.legendDataNamelist);
+            var legendlinArr = data.legendDataNamelist
+            for(var teo=0; teo<legendlinArr.length;teo++){
+//                 selected[legendlinArr[teo]] = teo<4     //这个小于3。表示折线图默认前3个显示
+                 selected[legendlinArr[teo]] = false     //这个小于3。表示折线图默认前3个显示
+            }
+            option.legend.selected = selected;
+
+        }
+        //是否可以放大
+        if(data.dataZoomFlag){
+            var typeob1 = {};var typeob2 = {};
+            typeob1.type='inside';   typeob2.type='slider';
+            var dataZoomArray = [];
+            dataZoomArray.push(typeob1);
+            dataZoomArray.push(typeob2);
+            option.dataZoom=dataZoomArray;
+            //设置放大条于图表之间的距离
+            option.grid = {top:80};
+            option.grid = {bottom:120};
+        }
+        var xaxisArray = [];
+        var xaxisList = data.xaxisList
+        for(var i in xaxisList){
+            var  xaxis = {};
+            xaxis.name = xaxisList[i].unitName;
+            xaxis.data = xaxisList[i].xdata;
+            console.log(xaxisList[i]);
+            console.log(xaxisList[i].rotate);
+            xaxis.axisLabel = {rotate : xaxisList[i].rotate};
+            xaxis.splitLine = {show : xaxisList[i].splitLine};
+            xaxis.splitArea = {show : xaxisList[i].splitArea};
+            xaxis.nameTextStyle = {padding : [58,0,0,0]};
+            xaxisArray.push(xaxis)
+//                        console.log(xaxisArray);
+        }
+        option.xAxis=xaxisArray;
+
+//        var yxisArray = [];
+//        var yaxisList = data.yaxisList
+//        var offset = 0;
+//        for(var i in data.yaxisList){
+//        for(var i =0;i < data.yaxisList.length; i++){
+//            var  yaxis = {};
+//            yaxis.position = yaxisList[i].position;
+//            yaxis.axisLabel = {formatter : '{value} '+yaxisList[i].axisLabel};
+//            //是否颜色区分
+//            if(yaxisList[i].splitArea){yaxis.splitArea = {show : yaxisList[i].splitArea};}
+//            //是否网格
+//            if(yaxisList[i].splitLine){yaxis.splitLine = {show : yaxisList[i].splitArea};}
+//            yaxis.type = yaxisList[i].ytype;
+//            yaxis.name = yaxisList[i].yname;            //控制y轴名字显示
+//            yaxis.offset = yaxisList[i].offset+offset;
+//            i>2?offset = offset + 70:0;                 //第二次开始设置y轴间距
+//            yaxis.axisLine = {show : true};          //控制是否显示y轴
+//            yxisArray.push(yaxis)
+//        }
+
+//        var yxisArray = [];
+//        var yaxisList = data.yaxisList
+//        var offset = 0;
+//        for(var i =0;i < data.yaxisList.length; i++){
+//            var  yaxis = {};
+//            yaxis.position = yaxisList[i].position;
+//            yaxis.axisLabel = {formatter : '{value} '+yaxisList[i].axisLabel};
+//            //是否颜色区分
+//            if(yaxisList[i].splitArea){yaxis.splitArea = {show : yaxisList[i].splitArea};}
+//            //是否网格
+//            if(yaxisList[i].splitLine){yaxis.splitLine = {show : yaxisList[i].splitArea};}
+//            yaxis.type = yaxisList[i].ytype;
+//            //默认前4个显示y坐标轴 和 y轴名字
+//            if(i<=3){
+//                yaxis.name = yaxisList[i].yname;            //控制y轴名字显示
+//                yaxis.axisLine = {show : true};          //控制是否显示y轴
+//            }else{
+////                yaxis.name = yaxisList[i].yname;            //控制y轴名字显示
+//                yaxis.axisLine = {show : false};          //控制是否显示y轴
+//            }
+//            yaxis.offset = yaxisList[i].offset+offset;
+//            i>2?offset = offset + 70:0;                 //第二次开始设置y轴间距
+//            yxisArray.push(yaxis)
+//        }
+//        option.yAxis=yxisArray;
+        //设置图表Y轴
+        option.yAxis=inityxisArray(data);
+
+        var seriesArray = [];
+        var seriesList = data.seriesList
+        console.log(flag)
+        //flag:饼图为true，非饼图为flag。不支持
+        if(flag){
+            console.log("该数据为饼图");
+            var piearr = [];
+            piearr = seriesList[0].piedate             //饼图数据arr
+            option.legend = {};
+            var selected = {};                         //栏目对象
+            for(var teo in piearr){
+                selected[piearr[teo].name] = teo<20     //这个小于20。表示默认前20个显示
+            }
+            option.legend.selected=selected;         //栏目数据
+            option.legend.plain='plain';            //栏目平铺显示
+            option.legend.orient='vertical';        //栏目是否可以翻页
+            option.legend.right='15%';              //栏目右边距
+            option.legend.top=80;                    //栏目上边距
+            option.legend.bottom=40;                //栏目下边距
+
+            option.tooltip.trigger = 'item';
+            option.tooltip.formatter = "{a} <br/>{b} : {c} ({d}%)"
+
+            for(var i in data.seriesList){
+                var  series = {};
+                series.name = seriesList[i].dataName;
+                series.center = ["30%","50%"];      //饼图的坐标
+                series.radius = [5,"60%"];           //饼图的内半径，外半径
+                series.data = seriesList[i].piedate;   //饼图数据
+                series.type = seriesList[i].seriestype;//饼图
+                var emtem = {};
+                emtem.shadowBlur=30;
+                emtem.shadowColor='rgba(0, 0, 0, 0.5)';
+                emtem.shadowOffsetX=0
+                series.itemStyle = {emphasis:emtem};
+//                series.itemStyle = { emphasis : {{shadowBlur :30},{shadowOffsetX:0},{shadowColor:'rgba(0, 0, 0, 0.5)'}}
+
+                seriesArray.push(series);
+            }
+        }else{
+            console.log("该数据为折线或柱状图");
+            for(var i in data.seriesList){
+                var  series = {};
+                series.name = seriesList[i].dataName;
+                series.data = seriesList[i].data;
+                series.type = seriesList[i].seriestype;
+                //是否自动显示最大最小值
+                if(seriesList[i].markPointflag){
+                    var datamax = {};var datamin = {};
+                    datamax.type='max';   datamin.type='min';
+                    datamax.name='最大值';   datamin.name='最小值';
+                    var markPointDataArray = [];
+                    markPointDataArray.push(datamax);
+                    markPointDataArray.push(datamin);
+                    series.markPoint = {data : markPointDataArray};
+                }
+                //是否自动显示平均值
+                if(seriesList[i].markLineflag){
+                    var avg = {};
+                    avg.type='average';
+                    avg.name='平均值';
+                    var avgArray = [];
+                    avgArray.push(avg);
+                    series.markLine = {data : avgArray};
+                }
+                //于y轴对应的index
+                series.yAxisIndex=seriesList[i].yaxisIndex;
+                seriesArray.push(series);
+            }
+        }
+
+        option.series=seriesArray;
+        console.log(option);
+        myChart.setOption(option);
+    }
+
+    function initChart() {
+
+        var dataCount = 5000;
+        var data = generateData(dataCount);
+
+        option = {
+            title: {
+                text: echarts.format.addCommas(dataCount) + ' Data',        //图表名字
+                left: 10                                                       //图表名字离边框的距离
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: false       //指定哪些 yAxis 被控制。如果缺省则控制所有的y轴。如果设置为 false 则不控制任何y轴
+                    },
+                    dataView: {readOnly: true},                                    //工具栏  数据文字简单显示  是否不可编辑（只读）。
+                    magicType: {type: ['tiled','stack','lineX','line', 'bar']}, //工具栏  区域选择lineX  折线图line   柱状图bar  stack堆叠模式  tiled平铺模式
+                    saveAsImage: {
+                        pixelRatio: 2           //保存图片的分辨率比例，默认跟容器相同大小，如果需要保存更高分辨率的，可以设置为大于 1 的值，例如 2。
+                    }
+
+                }
+            },
+//            legend: {
+//                data:['蒸发量','降水量','玫瑰雨量']       //数据选中显示，不选中不显示
+//            },
+            tooltip: {
+                trigger: 'axis',                //鼠标放在图表上显示当前位置得数据  axis用于折线图、 item用于饼图
+                axisPointer: {
+                    type: 'shadow'              //鼠标移动时候更着动得横纵线
+                }
+            },
+//            grid: {
+//                top:88,                             //上方工具栏与图表距离
+//                bottom: 120                        //放大条与图表距离
+//            },
+//            dataZoom: [{
+//                type: 'inside'                    //控制图标可以用鼠标滑轮进行 放大、缩小
+//            }, {
+//                type: 'slider'                    //控制底部缩放条显示与可移动
+//            }],
+            xAxis: [{
+                name: '日期（min）',               //x轴单位i
+//                nameLocation: 'start',
+//                nameGap:60,
+                nameTextStyle:{
+                    padding: [58,0,0,0]             //padding: [3, 4, 5, 6]：表示 [上, 右, 下, 左] 的边距。
+                },
+                data: data.categoryData,
+                silent: false,                     //坐标轴是否是静态无法交互。 默认false
+                axisLabel:{
+                    //interval:0,                   //横轴信息全部显示
+                    rotate:0,                     //-15度角倾斜显示
+                },
+
+                splitLine: {
+                    show: false                    //false代表不显示图表网格得纵轴
+                },
+                splitArea: {
+                    show: false                     //是否用颜色区分隔区域 默认是true
+                }
+            }],
+            yAxis: [
+                {
+                    position:'left',                    //第一个y轴位置在左侧
+                    axisLabel: {
+                        formatter: '{value} $'        //单位
+                    },
+                    splitArea: {
+                        show: false                     //是否用颜色区分隔区域 默认是true
+                    }
+                },
+                {
+                    position:'right',                   //第二个y轴在右侧
+                    type: 'value',
+                    name: '降水量',
+                    //min: 0,                             //y轴最小值
+                    //max: 7000,                          //y轴最大值
+                    //interval: 5,
+                    axisLabel: {
+                        formatter: '{value} °C'
+                    }
+                },
+                {
+                    position:'right',                   //第三个y轴也在右侧
+                    offset:70,                           //距第二个y轴70个像素
+                    type: 'value',
+                    name: '玫瑰雨量1',
+                    //min: 0,                             //y轴最小值
+                    //max: 7000,                          //y轴最大值
+                    //interval: 5,
+                    axisLabel: {
+                        formatter: '{value} 朵'
+                    }
+                }
+            ],
+            series: [{
+                name:'蒸发量',
+                type: 'line',                       //line这线 bar柱状图
+                data: data.valueData,
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                },
+                // Set `large` for large data amount
+                large: true                         // 是否开启大数据量优化，在数据图形特别多而出现卡顿时候可以开启。优化后不能自定义设置单个数据项的样式。
+            },
+            {
+                name:'降水量',
+                type: 'line',                       //line这线 bar柱状图
+                data: data.valueData2,
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                yAxisIndex: 1,
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                },
+                // Set `large` for large data amount
+                large: true                         // 是否开启大数据量优化，在数据图形特别多而出现卡顿时候可以开启。优化后不能自定义设置单个数据项的样式。
+            },
+                {
+                    name:'玫瑰雨量',
+                    type: 'line',                       //line这线 bar柱状图
+                    data: data.valueData3,
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                    yAxisIndex: 2,
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'}
+                        ]
+                    },
+                    // Set `large` for large data amount
+                    large: true                         // 是否开启大数据量优化，在数据图形特别多而出现卡顿时候可以开启。优化后不能自定义设置单个数据项的样式。
+                }
+            ]
+        };
+
+        function generateData(count) {
+            var baseValue = Math.random() * 1000;
+            var time = +new Date(2011, 0, 1);
+            var smallBaseValue;
+
+            function next(idx) {
+                smallBaseValue = idx % 30 === 0
+                    ? Math.random() * 700
+                    : (smallBaseValue + Math.random() * 500 - 250);
+                baseValue += Math.random() * 20 - 10;
+                return Math.max(
+                    0,
+                    Math.round(baseValue + smallBaseValue) + 3000
+                );
+            }
+
+            var categoryData = [];
+            var valueData = [];
+            var valueData2 = [];
+            var valueData3 = [];
+
+            for (var i = 0; i < count; i++) {
+                categoryData.push(echarts.format.formatTime('yyyy-MM-dd\nhh:mm:ss', time));
+                valueData.push(next(i).toFixed(2));
+                valueData2.push(next(i+100).toFixed(2));
+                valueData3.push(next(i+1000).toFixed(2));
+                time += 1000;
+            }
+
+            return {
+                categoryData: categoryData,
+                valueData: valueData,
+                valueData2: valueData2,
+                valueData3: valueData3
+            };
+        }
+    }
+
+</script>
+<body>
+<h1 style="text-align: center" th:text="${initEcharsDto.text}">体重查看页面</h1>
+
+<!--<a href="javascript:void(0)" onclick="showWeight()" style="text-decoration: none;margin-left: 140px">查看我的体重</a>-->
+
+<div id="main" style="height:680px;width: 100%;margin: 20px auto 0"></div>
+
+<div id="zhuti"  class="zhutic" >
+    <button type="button" class="btn btn-primary" onclick="lingdong()">灵动</button>
+    <button type="button" class="btn btn-info" onclick="anying()">暗影</button>
+</div>
+
+</body>
+
+<script th:inline="javascript">
+
+    function anying() {
+        console.log('anying')
+        myChart.dispose();
+        initChart()
+        //基于准备好的dom，初始化echarts实例
+        myChart = echarts.init(document.getElementById('main'),'dark');
+        //myChart.setOption(option)
+
+        var msg = [[${mb}]];                //这里取得后端传过来的json
+        var objdto = JSON.parse(msg);       //这里将取得json转成js对象
+        initHelp(objdto);                    //这个是后端传值生成图表
+    }
+    function lingdong() {
+        console.log('lingdong')
+        myChart.dispose();
+        initChart()
+        //基于准备好的dom，初始化echarts实例
+        myChart = echarts.init(document.getElementById('main'),'macarons');
+        //myChart.setOption(option)
+
+        var msg = [[${mb}]];                //这里取得后端传过来的json
+        var objdto = JSON.parse(msg);       //这里将取得json转成js对象
+        initHelp(objdto);                    //这个是后端传值生成图表
+
+    }
+</script>
+
+<style>
+    .zhutic{
+        margin-top: 20px;
+        margin-left: 15%;
+        width: auto;
+        height: auto;
+    }
+    .zhutidet{
+        margin-left: 20px;
+        padding-left: 40px;
+        width: auto;
+        height: auto;
+        float: left;
+        font-size: 30px;
+        border-radius:20px;
+    }
+</style>
+
+</html>
+

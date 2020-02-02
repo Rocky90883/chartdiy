@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.springboot.mapper.secondary.OrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.atguigu.springboot.bean.OrderInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="status" jdbcType="VARCHAR" property="status"
+            typeHandler="com.atguigu.springboot.typehandler.OrderInfoTypeHandler"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, status
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from order_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByStatus" parameterType="com.atguigu.springboot.bean.OrderInfo">
+    select id,status from order_info
+    where status = #{status,jdbcType=VARCHAR,typeHandler=com.atguigu.springboot.typehandler.OrderInfoTypeHandler}::orderenum
+  </select>
+
+  <select id="selectByStatusList" resultType="java.util.Map" parameterType="com.atguigu.springboot.bean.OrderInfo">
+    select id,status from order_info
+    where status = #{status,jdbcType=VARCHAR,typeHandler=com.atguigu.springboot.typehandler.OrderInfoTypeHandler}::orderenum
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.atguigu.springboot.bean.OrderInfo"
+          useGeneratedKeys="true" keyColumn="id" keyProperty="id" >
+    insert into order_info(status)
+    values (#{status,jdbcType=VARCHAR,typeHandler=com.atguigu.springboot.typehandler.OrderInfoTypeHandler}::orderenum)
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.atguigu.springboot.bean.OrderInfo">
+    insert into order_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.springboot.bean.OrderInfo">
+    update order_info
+    <set>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.springboot.bean.OrderInfo">
+    update order_info
+    set status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>
