@@ -1,7 +1,7 @@
 package com.atguigu.springboot.mapper.secondary;
 
 import com.atguigu.springboot.bean.OrderInfo;
-import com.atguigu.springboot.enums.OrderInfoEnum;
+import com.atguigu.springboot.type.enums.OrderInfoEnum;
 
 import java.util.List;
 
