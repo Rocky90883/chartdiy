@@ -1,0 +1,113 @@
+2020-03-05 10:54:52 -Starting ChartdiyApplication on DESKTOP-JOE7MCK with PID 23424 (started by Rocky in D:\BaiduNetdiskDownload\源码、资料、课件\源码、资料、课件\代码\chartdiy)
+2020-03-05 10:54:52 -No active profile set, falling back to default profiles: default
+2020-03-05 10:54:52 -HV000001: Hibernate Validator 5.3.6.Final
+2020-03-05 10:54:52 -Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@641189cb: startup date [Thu Mar 05 10:54:52 CST 2020]; root of context hierarchy
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'departmentMapper' and 'com.atguigu.springboot.mapper.primary.DepartmentMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'employeeMapper' and 'com.atguigu.springboot.mapper.primary.EmployeeMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'shareMapper' and 'com.atguigu.springboot.mapper.primary.ShareMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'sysConfigMapper' and 'com.atguigu.springboot.mapper.primary.SysConfigMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'weightMapper' and 'com.atguigu.springboot.mapper.primary.WeightMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -Skipping MapperFactoryBean with name 'orderInfoMapper' and 'com.atguigu.springboot.mapper.secondary.OrderInfoMapper' mapperInterface. Bean already defined with the same name!
+2020-03-05 10:54:55 -No MyBatis mapper was found in '[com.atguigu.springboot.mapper]' package. Please check your configuration.
+2020-03-05 10:54:55 -Multiple Spring Data modules found, entering strict repository configuration mode!
+2020-03-05 10:54:56 -Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$2694277c] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-03-05 10:54:56 -Bean 'redisConfiguration' of type [com.atguigu.springboot.config.RedisConfiguration$$EnhancerBySpringCGLIB$$4799177e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-03-05 10:54:56 -Bean 'org.springframework.cache.annotation.ProxyCachingConfiguration' of type [org.springframework.cache.annotation.ProxyCachingConfiguration$$EnhancerBySpringCGLIB$$6fa65d9a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2020-03-05 10:54:56 -Tomcat initialized with port(s): 8080 (http)
+2020-03-05 10:54:56 -Starting service [Tomcat]
+2020-03-05 10:54:56 -Starting Servlet Engine: Apache Tomcat/8.5.27
+2020-03-05 10:54:57 -Initializing Spring embedded WebApplicationContext
+2020-03-05 10:54:57 -Root WebApplicationContext: initialization completed in 4294 ms
+2020-03-05 10:54:57 -Mapping servlet: 'statViewServlet' to [/druid/*]
+2020-03-05 10:54:57 -Mapping servlet: 'dispatcherServlet' to [/]
+2020-03-05 10:54:57 -Mapping servlet: 'statViewServlet' to [/druid/*]
+2020-03-05 10:54:57 -Servlet statViewServlet was not registered (possibly already registered?)
+2020-03-05 10:54:57 -Mapping filter: 'characterEncodingFilter' to: [/*]
+2020-03-05 10:54:57 -Mapping filter: 'webStatFilter' to urls: [/*]
+2020-03-05 10:54:57 -Filter webStatFilter was not registered (possibly already registered?)
+2020-03-05 10:54:59 -Mapped "{[/pullAgu],methods=[GET]}" onto public java.lang.String com.atguigu.springboot.controller.AguController.dopull()
+2020-03-05 10:54:59 -Mapped "{[/selectAllAgu],methods=[GET]}" onto public java.util.List<com.atguigu.springboot.bean.SharePo> com.atguigu.springboot.controller.AguController.getDepartment()
+2020-03-05 10:54:59 -Mapped "{[/dept],methods=[GET]}" onto public com.atguigu.springboot.bean.Department com.atguigu.springboot.controller.DeptController.insertDept(com.atguigu.springboot.bean.Department)
+2020-03-05 10:54:59 -Mapped "{[/emp/{id}],methods=[GET]}" onto public com.atguigu.springboot.bean.Employee com.atguigu.springboot.controller.DeptController.getEmp(java.lang.Integer)
+2020-03-05 10:54:59 -Mapped "{[/dept/{id}],methods=[GET]}" onto public com.atguigu.springboot.bean.Department com.atguigu.springboot.controller.DeptController.getDepartment(java.lang.Integer)
+2020-03-05 10:54:59 -Mapped "{[/userinfo],methods=[GET]}" onto public org.springframework.http.ResponseEntity<com.atguigu.springboot.my.bean.User> com.atguigu.springboot.controller.login.LoginController.getUserInfo(java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/logout],methods=[GET]}" onto public void com.atguigu.springboot.controller.login.LoginController.logOut(javax.servlet.http.Cookie,javax.servlet.http.HttpServletResponse)
+2020-03-05 10:54:59 -Mapped "{[/dologin],methods=[POST]}" onto public java.lang.String com.atguigu.springboot.controller.login.LoginController.dologin(com.atguigu.springboot.my.bean.User,javax.servlet.http.HttpSession,javax.servlet.http.HttpServletResponse)
+2020-03-05 10:54:59 -Mapped "{[/view/login]}" onto public java.lang.String com.atguigu.springboot.controller.login.LoginViewController.tologin()
+2020-03-05 10:54:59 -Mapped "{[/view/index]}" onto public java.lang.String com.atguigu.springboot.controller.login.LoginViewController.toindex(javax.servlet.http.Cookie,javax.servlet.http.HttpSession)
+2020-03-05 10:54:59 -Mapped "{[/hello]}" onto public java.lang.String com.atguigu.springboot.controller.PersonController.hello()
+2020-03-05 10:54:59 -Mapped "{[/myEcharts/{id}]}" onto public java.lang.String com.atguigu.springboot.controller.PersonController.myEcharts(java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/toPerson],methods=[GET]}" onto public java.lang.String com.atguigu.springboot.controller.PersonController.toPerson()
+2020-03-05 10:54:59 -Mapped "{[/initEchars]}" onto public java.lang.String com.atguigu.springboot.controller.PersonController.initEchars(java.util.Map<java.lang.String, java.lang.Object>) throws java.text.ParseException
+2020-03-05 10:54:59 -Mapped "{[/properties],methods=[GET]}" onto public java.lang.String com.atguigu.springboot.controller.TestController.properties()
+2020-03-05 10:54:59 -Mapped "{[/testnotnull],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.String com.atguigu.springboot.controller.TestController.testnotnull(java.lang.String,java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/postObject],methods=[POST],produces=[application/json;charset=UTF-8]}" onto public java.lang.String com.atguigu.springboot.controller.TestController.postObject(java.util.List<com.atguigu.springboot.bean.Employee>,java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/select],methods=[GET],produces=[application/json;charset=UTF-8]}" onto public java.lang.String com.atguigu.springboot.controller.TestController.selectTest()
+2020-03-05 10:54:59 -Mapped "{[/ec/wei],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.EchartsController.myEcharts(org.springframework.ui.Model)
+2020-03-05 10:54:59 -Mapped "{[/ec/initEchars],methods=[POST]}" onto public com.atguigu.springboot.my.bean.MessageBean com.atguigu.springboot.my.controller.EchartsController.initEchars()
+2020-03-05 10:54:59 -Mapped "{[/ec/myEchartspie]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.EchartsController.myEchartspie(java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/ec/myEchartshash]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.EchartsController.myEchartshash(java.util.HashMap)
+2020-03-05 10:54:59 -Mapped "{[/ec/myEchartstwo]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.EchartsController.myEchartstwo(java.lang.String)
+2020-03-05 10:54:59 -Mapped "{[/ec/invincibleData],methods=[POST]}" onto public com.atguigu.springboot.my.bean.MessageBean com.atguigu.springboot.my.controller.EchartsController.invincibleData()
+2020-03-05 10:54:59 -Mapped "{[/queryAllEmp],methods=[GET]}" onto public java.lang.String com.atguigu.springboot.my.controller.RedisTestController.queryAllEmp()
+2020-03-05 10:54:59 -Mapped "{[/myindex]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.VotingController.myindex(java.util.HashMap)
+2020-03-05 10:54:59 -Mapped "{[/voting]}" onto public org.springframework.web.servlet.ModelAndView com.atguigu.springboot.my.controller.VotingController.voting(java.util.HashMap)
+2020-03-05 10:54:59 -Mapped "{[/swagger-resources/configuration/security]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.SecurityConfiguration> springfox.documentation.swagger.web.ApiResourceController.securityConfiguration()
+2020-03-05 10:54:59 -Mapped "{[/swagger-resources]}" onto public org.springframework.http.ResponseEntity<java.util.List<springfox.documentation.swagger.web.SwaggerResource>> springfox.documentation.swagger.web.ApiResourceController.swaggerResources()
+2020-03-05 10:54:59 -Mapped "{[/swagger-resources/configuration/ui]}" onto public org.springframework.http.ResponseEntity<springfox.documentation.swagger.web.UiConfiguration> springfox.documentation.swagger.web.ApiResourceController.uiConfiguration()
+2020-03-05 10:54:59 -Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2020-03-05 10:54:59 -Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2020-03-05 10:54:59 -Mapped URL path [/v2/api-docs] onto method [public org.springframework.http.ResponseEntity<springfox.documentation.spring.web.json.Json> springfox.documentation.swagger2.web.Swagger2Controller.getDocumentation(java.lang.String,javax.servlet.http.HttpServletRequest)]
+2020-03-05 10:54:59 -Mapped URL path [/swagger] onto handler of type [class org.springframework.web.servlet.mvc.ParameterizableViewController]
+2020-03-05 10:54:59 -Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-03-05 10:54:59 -Mapped URL path [/swagger-ui.html] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-03-05 10:54:59 -Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2020-03-05 10:54:59 -Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@641189cb: startup date [Thu Mar 05 10:54:52 CST 2020]; root of context hierarchy
+2020-03-05 10:55:00 -[THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+2020-03-05 10:55:01 -LiveReload server is running on port 35729
+2020-03-05 10:55:01 -Registering beans for JMX exposure on startup
+2020-03-05 10:55:01 -Bean with name 'primaryDataSource' has been autodetected for JMX exposure
+2020-03-05 10:55:01 -Bean with name 'slaveDataSource' has been autodetected for JMX exposure
+2020-03-05 10:55:01 -Bean with name 'statFilter' has been autodetected for JMX exposure
+2020-03-05 10:55:01 -Located MBean 'primaryDataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=primaryDataSource,type=DruidDataSource]
+2020-03-05 10:55:01 -Located MBean 'slaveDataSource': registering with JMX server as MBean [com.alibaba.druid.pool:name=slaveDataSource,type=DruidDataSource]
+2020-03-05 10:55:01 -Located MBean 'statFilter': registering with JMX server as MBean [com.alibaba.druid.filter.stat:name=statFilter,type=StatFilter]
+2020-03-05 10:55:01 -Starting beans in phase 2147483647
+2020-03-05 10:55:01 -Context refreshed
+2020-03-05 10:55:01 -Found 1 custom documentation plugin(s)
+2020-03-05 10:55:01 -Scanning for api listing references
+2020-03-05 10:55:01 -Generating unique operation named: getDepartmentUsingGET_1
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Generating unique operation named: initEcharsUsingPOST_1
+2020-03-05 10:55:01 -Generating unique operation named: myEchartsUsingGET_1
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Trying to infer dataType java.util.HashMap
+2020-03-05 10:55:01 -Initializing ProtocolHandler ["http-nio-8080"]
+2020-03-05 10:55:01 -Starting ProtocolHandler ["http-nio-8080"]
+2020-03-05 10:55:01 -Using a shared selector for servlet write/read
+2020-03-05 10:55:01 -Tomcat started on port(s): 8080 (http)
+2020-03-05 10:55:01 -Started ChartdiyApplication in 9.871 seconds (JVM running for 13.091)
+2020-03-05 10:55:22 -Initializing Spring FrameworkServlet 'dispatcherServlet'
+2020-03-05 10:55:22 -FrameworkServlet 'dispatcherServlet': initialization started
+2020-03-05 10:55:22 -FrameworkServlet 'dispatcherServlet': initialization completed in 46 ms
