@@ -153,7 +153,13 @@
                             <span class="line"></span>
                         </div>
                     </div>
-                    <div class="float-right">
+                    <!--以下是通知、邮件、用户信息-->
+                    <div class="floar-right" style="padding-right: 20px;" th:if="${session.loginuser==null}">
+                        <span style="width:48px;height:42px;float: right;text-align: center; vertical-align: middle;">
+                            <button class="btn" style="color: #ffffff; background-color: blue;" onclick="location.href='/view/login'">登陆</button>
+                        </span>
+                    </div>
+                    <div class="float-right" th:unless="${session.loginuser==null}">
                         <div class="dropdown dib">
                             <div class="header-icon" data-toggle="dropdown">
                                 <i class="ti-bell"></i>
@@ -271,9 +277,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="dropdown dib">
+                        <div class="dropdown dib" th:unless="${session.loginuser==null}">
                             <div class="header-icon" data-toggle="dropdown">
-                                <span class="user-avatar">John
+                                <span class="user-avatar"><span style="color:deeppink" th:text="${session.loginuser.Username}"></span>
                                     <i class="ti-angle-down f-s-10"></i>
                                 </span>
                                 <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
@@ -312,7 +318,7 @@
                                             <li>
                                                 <a href="#">
                                                     <i class="ti-power-off"></i>
-                                                    <span>Logout</span>
+                                                    <span onclick="location.href='/logout'">Logout</span>
                                                 </a>
                                             </li>
                                         </ul>
