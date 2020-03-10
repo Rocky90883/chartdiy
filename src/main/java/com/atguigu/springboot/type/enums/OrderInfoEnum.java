@@ -1,4 +1,4 @@
-package com.atguigu.springboot.enums;
+package com.atguigu.springboot.type.enums;
 
 import java.lang.String;
 /**
