@@ -3,7 +3,7 @@ package com.atguigu.springboot.controller;
 import com.atguigu.springboot.bean.Employee;
 import com.atguigu.springboot.bean.OrderInfo;
 import com.atguigu.springboot.config.bean.Myproperties;
-import com.atguigu.springboot.enums.OrderInfoEnum;
+import com.atguigu.springboot.type.enums.OrderInfoEnum;
 import com.atguigu.springboot.mapper.secondary.OrderInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
