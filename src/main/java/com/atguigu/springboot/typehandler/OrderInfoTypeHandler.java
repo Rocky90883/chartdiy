@@ -1,6 +1,6 @@
 package com.atguigu.springboot.typehandler;
 
-import com.atguigu.springboot.enums.OrderInfoEnum;
+import com.atguigu.springboot.type.enums.OrderInfoEnum;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
