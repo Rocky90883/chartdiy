@@ -9,9 +9,10 @@
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByStatusList" resultType="com.atguigu.springboot.bean.hualala.Bdhualala" parameterType="com.atguigu.springboot.bean.hualala.Bdhualala">
-    select id,status from order_info
-    where status = #{status,jdbcType=VARCHAR,typeHandler=com.atguigu.springboot.typehandler.OrderInfoTypeHandler}::orderenum
+  <select id="selectByOrderSubType" resultType="com.atguigu.springboot.bean.hualala.Bdhualala" parameterType="com.atguigu.springboot.bean.hualala.Bdhualala">
+    select *
+    from bdhualala
+    where orderStatus = #{orderStatus,jdbcType=VARCHAR}
   </select>
 
 

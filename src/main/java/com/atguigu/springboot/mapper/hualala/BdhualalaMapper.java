@@ -10,6 +10,6 @@ public interface BdhualalaMapper {
 
     public Bdhualala selectByPrimaryKey(String id);
 
-    public List<Bdhualala> selectByOrderSubType(String orderSubType);
+    public List<Bdhualala> selectByOrderSubType(Bdhualala bdhualala);
 
 }
