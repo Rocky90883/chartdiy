@@ -1,9 +1,11 @@
 package com.atguigu.springboot.my.bean;
 
+import com.atguigu.springboot.utils.CommonUtil;
+import com.atguigu.springboot.utils.JacksonUtil;
 import lombok.Data;
 
 @Data
-public class MessageBean {
+public class MessageBean<T> {
     /**
      * 信息代码
      */
@@ -15,40 +17,9 @@ public class MessageBean {
     /**
      * 数据
      */
-    private Object data;
+    private T data;
 
-
-//    public MessageBean() {
-//        super();
-//    }
-//
-//    public MessageBean(int code, String message, Object data) {
-//        super();
-//        this.code = code;
-//        this.message = message;
-//        this.data = data;
-//    }
-//
-//    public int getCode() {
-//        return code;
-//    }
-//    public void setCode(int code) {
-//        this.code = code;
-//    }
-//
-//    public Object getData() {
-//        return data;
-//    }
-//
-//    public void setData(Object data) {
-//        this.data = data;
-//    }
-//
-//    public String getMessage() {
-//        return message;
-//    }
-//    public void setMessage(String message) {
-//        this.message = message;
-//    }
-
+    public String tojson(){
+       return CommonUtil.toJson(this);
+    }
 }

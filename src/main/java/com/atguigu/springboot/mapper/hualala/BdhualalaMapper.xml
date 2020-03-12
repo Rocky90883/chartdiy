@@ -3,16 +3,32 @@
 <mapper namespace="com.atguigu.springboot.mapper.hualala.BdhualalaMapper">
 
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.atguigu.springboot.bean.hualala.Bdhualala">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.atguigu.springboot.bean.hualala.BdhualalaBean">
     select *
     from bdhualala
     where id = #{id,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByOrderSubType" resultType="com.atguigu.springboot.bean.hualala.Bdhualala" parameterType="com.atguigu.springboot.bean.hualala.Bdhualala">
-    select *
+  <select id="selectByOrderSubType" resultType="com.atguigu.springboot.bean.hualala.BdhualalaBean" parameterType="com.atguigu.springboot.bean.hualala.dto.BdhualalaDto">
+    SELECT TOP ${size} * FROM(
+    SELECT ROW_NUMBER() OVER (ORDER BY
+    <if test="sortField = null or sortField = ''">reportDate desc </if>
+    <if test="sortField != null and sortField != ''">${sortField} </if>
+    <if test="sortType != null and sortType != ''">${sortType} </if>
+    ) AS RowNumber,*
     from bdhualala
-    where orderStatus = #{orderStatus,jdbcType=VARCHAR}
+    where 1=1
+    <if test="orderStatus != null and orderStatus != ''">AND orderStatus = ${orderStatus} </if>
+    ) a
+
+    WHERE a.RowNumber > (${begin}-1) * ${size}
+  </select>
+
+  <select id="countselectByOrderSubType" resultType="java.lang.Integer" parameterType="com.atguigu.springboot.bean.hualala.dto.BdhualalaDto">
+    SELECT COUNT(*)
+    from bdhualala
+    where 1=1
+    <if test="orderStatus != null and orderStatus != ''">AND orderStatus = ${orderStatus} </if>
   </select>
 
 
