@@ -1,6 +1,7 @@
 package com.atguigu.springboot.bean.hualala;
 
 
+import com.atguigu.springboot.target.Description;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,22 +14,39 @@ import lombok.experimental.Accessors;
 public class BdhualalaBean {
 
     private String PUID;
+
     private String id;
+
     private String shopID;
+
     private String saasOrderKey;
+
     private String saasDeviceOrderNo;
+
     private String shopName;
+
     private String orderSubType;
+
     private String netOrderTypeCode;
+
     private String createBy;
+
     private String checkoutBy;
+
     private String orderStatus;
+
     private String isTestOrder;
+
     private String orderMD5;
+
     private Double foodCount;
+
     private Double foodAmount;
+
     private Double sendFoodAmount;
+
     private Double sendCouponAmount;
+
     private String cardNo;
     private String discountBy;
     private Double discountRate;

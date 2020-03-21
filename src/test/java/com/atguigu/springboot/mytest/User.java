@@ -3,6 +3,7 @@ package com.atguigu.springboot.mytest;
 import java.util.List;
 
 public class User {
+
     private  String name;
 
     private  Integer old;

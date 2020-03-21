@@ -212,10 +212,35 @@
             for(var key in config) {
                 args.push(config[key]);
             }
-
             args.unshift(source, context);
 
             source = getOrApply.apply(null, args);
+
+            return (source === undefined || source === null) ? "" : source;
+        },
+
+        /**
+         * Rocky
+         * @param cell  标签
+         * @param source
+         * @param context
+         * @param config
+         * @returns {string}
+         */
+        getZh_Name: function(cell,source, context, config) {
+            args = [];
+            for(var key in config) {
+                args.push(config[key]);
+            }
+            args.unshift(source, context);
+            if(cell=="<th>"){
+                if(args[1].type=="control"){
+                    args.unshift(source, context);
+                    source = getOrApply.apply(null, args);
+                }else{
+                    source = args[1].zh_name;
+                }
+            }
             return (source === undefined || source === null) ? "" : source;
         },
 
@@ -465,7 +490,8 @@
 
             this._eachField(function(field, index) {
                 var $th = this._prepareCell("<th>", field, "headercss", this.headerCellClass)
-                    .append(this.renderTemplate(field.headerTemplate, field))
+                    // .append(this.renderTemplate(field.headerTemplate, field))
+                    .append(this.getZh_Name("<th>",field.headerTemplate, field))                    //拼接表格头部的中文
                     .appendTo($result);
 
                 if(this.sorting && field.sorting) {

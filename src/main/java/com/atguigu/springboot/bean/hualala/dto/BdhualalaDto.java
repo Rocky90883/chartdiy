@@ -1,6 +1,7 @@
 package com.atguigu.springboot.bean.hualala.dto;
 
 import com.atguigu.springboot.bean.PageDto;
+import com.atguigu.springboot.bean.hualala.BdhualalaBean;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,6 @@ public class BdhualalaDto extends PageDto{
     private String minreportDate;
     private String shopID;
     private String orderStatus;
+    private String ids;
 
 }
