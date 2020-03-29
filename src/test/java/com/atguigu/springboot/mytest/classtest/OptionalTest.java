@@ -1,11 +1,12 @@
-package com.atguigu.springboot.mytest;
+package com.atguigu.springboot.mytest.classtest;
 
+import com.atguigu.springboot.my.bean.User;
+import com.atguigu.springboot.mytest.Usernew;
+import com.atguigu.springboot.utils.LoginCacheUtil;
 import org.apache.poi.ss.formula.functions.T;
 
 import javax.swing.text.html.Option;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -26,13 +27,21 @@ import java.util.function.Consumer;
 
 public class OptionalTest {
 
+    private static Set<User> dbuse ;
+    static{
+        dbuse = new HashSet<>();
+        dbuse.add(new User(1,"张山","","123"));
+        dbuse.add(new User(2,"李四","","1234"));
+        dbuse.add(new User(3,"王五","","12345"));
+    }
+
     public static void main(String[] args){
 
         //判断非空
-        util();
+        //util();
 
         //对象的filter
-        //optional_filter();
+        optional_filter();
 
         //不是想要的直接输出另外的值
         //optional_orelse();
@@ -52,10 +61,10 @@ public class OptionalTest {
             System.out.println("为空");
         }
 
-
         Optional.ofNullable(usernew).ifPresent(u->{
             usernew.setName("梁光春");
         });
+
 
         System.out.println(usernew.getName());
     }
@@ -112,6 +121,13 @@ public class OptionalTest {
             System.out.println("map为null");
         }
         System.out.println("........多种类型过滤..........");
+
+     User user = new User();
+     user.setUsername("王五");
+     user.setUsername("12345");
+
+     System.out.println(dbuse.stream());
+//     Optional<User> filter = Optional.ofNullable()
 
     }
 
