@@ -19,6 +19,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     //CheckParamsInterceptor checkSourceInterceptor = new CheckParamsInterceptor();   //参数非空拦截器
+    //扫描路径 还可以基于注解的扫描 例如   .withClassAnnotation("RestController.class")
+    //PathSelectors.ant("这里配置选择扫描的路径")
+    //enable(false)可以关闭swagger
 
     /**
      * Swagger需要
@@ -31,7 +34,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .select()
                 .apis(RequestHandlerSelectors
                         .basePackage("com.atguigu.springboot"))
-                .paths(PathSelectors.any()).build();
+                .paths(PathSelectors.any()).build().enable(true);
     }
 
     /**
@@ -61,7 +64,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
 
     }
 
-    /**
+     /**
      * Swagger需要
      * 将以/swagger结束的请求，重定向为访问/swagger-ui.html
      * @param registry

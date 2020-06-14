@@ -13,7 +13,7 @@ import com.atguigu.springboot.my.vo.WeightVo;
 import com.atguigu.springboot.utils.ImitationDataUtil;
 import com.atguigu.springboot.utils.JacksonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import net.sf.json.JSONArray;
+//import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

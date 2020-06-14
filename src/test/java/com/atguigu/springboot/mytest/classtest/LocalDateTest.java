@@ -1,21 +1,44 @@
 package com.atguigu.springboot.mytest.classtest;
 
+import org.junit.Test;
+import org.springframework.util.Assert;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.ValueRange;
+import java.util.Calendar;
 
 public class LocalDateTest {
 
     public static void main(String[] args){
 
-        util();
+//        util();
         localtime();
         jisuan();
     }
 
-    public static void util(){
+    /**
+     * 获取当前日期（yyyy-MM-dd）
+     *
+     * @return
+     */
+    @Test
+    public void getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        System.out.println(sdf.format(cal.getTime()));
+        return;
+    }
+
+
+
+    @Test
+    public void util(){
 
         System.out.println("of---------------------");
         LocalDate of = LocalDate.of(2020, 03, 28);
@@ -36,6 +59,68 @@ public class LocalDateTest {
         System.out.println(now1);
 
     }
+
+    /**
+     * 使用LocalDateTime架包
+     *    java8获取时间戳
+     */
+    @Test
+    public void getshijiancuo(){
+        LocalDate localDate = LocalDate.now();
+        Timestamp timestamp= Timestamp.valueOf(LocalDateTime.now());
+        System.out.println(timestamp.getTime());
+    }
+
+    /**
+     * 将Long类型的时间戳转换成String 类型的时间格式，时间格式为：yyyy-MM-dd HH:mm:ss
+     */
+    @Test
+    public void convertLocalDateToString(){
+        LocalDate localDate = LocalDate.now();
+        Long timeStampMillis= Timestamp.valueOf(LocalDateTime.now()).getTime();;
+
+        Assert.notNull(timeStampMillis, "time is null");
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        System.out.println(ftf.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeStampMillis), ZoneId.systemDefault())));
+    }
+
+    /**
+     * 使用Instant架包
+     * java8获取时间戳
+     */
+    @Test
+    public void getInstan(){
+        Instant instant = Instant.now();
+        long timeStampMillis = instant.toEpochMilli();
+        System.out.println(timeStampMillis);
+    }
+
+
+    /**
+     * 将Long类型的时间戳转换成String 类型的时间格式，时间格式为：yyyy-MM-dd HH:mm:ss
+     */
+    @Test
+    public void convertTimeToString(){
+        Instant instant = Instant.now();
+        long timeStampMillis = instant.toEpochMilli();
+
+        Assert.notNull(timeStampMillis, "time is null");
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        System.out.println(ftf.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(timeStampMillis), ZoneId.systemDefault())));
+    }
+
+    /**
+     * 将字符串转日期成Long类型的时间戳，格式为：yyyy-MM-dd HH:mm:ss
+     */
+    public static Long convertTimeToLong(String time) {
+        Assert.notNull(time, "time is null");
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime parse = LocalDateTime.parse("2018-05-29 13:52:50", ftf);
+        return LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
 
     public static void localtime(){
 

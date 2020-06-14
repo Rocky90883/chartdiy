@@ -4,10 +4,13 @@ import com.atguigu.springboot.mytest.Bean.Employee;
 import com.atguigu.springboot.mytest.common.Data.DataUtils;
 import io.swagger.models.auth.In;
 import org.jsoup.select.Collector;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
@@ -169,7 +172,7 @@ public class StreamTest {
                 .collect(Collectors.reducing((e1, e2) -> e1.getMoney() > e2.getMoney() ? e1 : e2));
         collectReducing.ifPresent(System.out::println);
 
-        Employee compara = new Employee("比较名",99999,99999.0);
+        Employee compara = new Employee("比较名",99999,99999.0,new BigDecimal("23424"));
         Employee collect3 = listemp.stream()
                 .collect(Collectors.reducing(compara, (e1, e2) -> e1.getMoney() > e2.getMoney() ? e1 : e2));        //传入一个对象进行比较
         System.out.println(collect3);
@@ -247,4 +250,248 @@ public class StreamTest {
 //                .limit(2); //9 8
 //        newStream.forEach(System.out::println);
     }
+
+    /**
+     * map的流
+     */
+//    @Test
+//    public static void mapSteam(){
+//
+//        Map map = new HashMap();
+//        map.put("第一","迪士尼");
+//        map.put("第一","肯德基");
+//        map.put("第二","麦当劳");
+////        map.entrySet().stream().collect(Collectors.toMap());
+//
+//        Map<String,Integer> mapsi = new HashMap();
+//        mapsi.put("第一",12);
+//        mapsi.put("第二",13);
+//        mapsi.put("第三",20);
+//
+//    }
+
+    @Test
+    public  void leiji(){
+        //虚拟数据
+        List<Employee> listemp = DataUtils.getListEmployee();
+//        listemp.forEach(System.out::println);
+
+        //累计Integer
+        Optional<Integer> optionalAdd = listemp.stream().map(Employee::getAget).reduce((a1, a2) -> a1 + a2);
+        if(optionalAdd.isPresent()){
+            System.out.println(optionalAdd.get());
+        }
+
+        //累计BigDecimal
+        BigDecimal reduce = listemp.stream().map(Employee::getNumber).reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println(reduce);
+
+
+        //找出BigDecimal最大的
+        BigDecimal maxNumber = listemp.stream().filter(o -> o.getNumber() != null).map(Employee::getNumber).distinct().max((e1, e2) -> e1.compareTo(e2)).get();
+        System.out.println(maxNumber);
+
+        //找出double最大的
+        Double aDouble = listemp.stream().filter(o -> o.getMoney() >= 0).map(Employee::getMoney).distinct().max((e1, e2) -> e1.compareTo(e2)).get();
+        System.out.println(aDouble);
+
+        //找出Integer最大的
+        Integer maxAge = listemp.stream().filter(o -> o.getAget() >= 0).map(Employee::getAget).distinct().max((e1, e2) -> e1.compareTo(e2)).get();
+        System.out.println(maxAge);
+
+        //找最小的
+        Integer minAge = listemp.stream().filter(o -> o.getAget() >= 0).map(Employee::getAget).distinct().min((e1, e2) -> e1.compareTo(e2)).get();
+        System.out.println("年龄最小"+minAge);
+
+        //取名字长度最大
+        Optional<String> reduce1 = listemp.stream().map(Employee::getName).reduce((s1, s2) -> s1.length() >= s2.length() ? s1 : s2);
+        if(reduce1.isPresent()){
+            System.out.println(reduce1.get());
+        }
+
+        //取名字长度最短的
+        Optional<String> reduce2 = listemp.stream().map(Employee::getName).reduce((s1, s2) -> s1.length() >= s2.length() ? s2 : s1);
+        if(reduce1.isPresent()){
+            System.out.println(reduce2.get());
+        }
+
+        //怪怪的但是很吊
+        Integer nameLength = listemp.stream().map(Employee::getName).reduce(0, (max, str) -> max + str.length(), (a, b) -> a + b);
+        System.out.println("所有名字长度总和："+nameLength);
+
+
+        //list泛型中某元素转map
+        Map<String, Integer> collect = listemp.stream().map(Employee::getName).collect(Collectors.toMap(Function.identity(), str -> str.length()));
+        System.out.println(collect);
+
+        Map<String, String> collect1 = listemp.stream().map(Employee::getName).collect(Collectors.toMap(Function.identity(), str -> str.length() == 2 ? "二" : "三"));
+        System.out.println(collect1);
+
+
+        //年龄大于18的
+        Map<Boolean, List<Integer>> agetdayushiba = listemp.stream().map(Employee::getAget).collect(Collectors.partitioningBy(s -> s >= 18));
+        System.out.println("年龄大于18的"+agetdayushiba);
+
+
+        //这个种比较实用   对list 不同年龄的 进行分组
+        Map<Integer, List<Employee>> collect2 = listemp.stream().collect(Collectors.groupingBy(Employee::getAget));
+        System.out.println(collect2);
+
+        //求出每个年龄段的人数
+        Map<Integer, Long> collect3 = listemp.stream().collect(Collectors.groupingBy((Employee::getAget), Collectors.counting()));
+        System.out.println("各年龄段人数");
+        System.out.println(collect3);
+
+
+    }
+
+
+
+
+    @Test
+    public void join(){
+        //虚拟数据
+        List<Employee> listemp = DataUtils.getListEmployee();
+
+        String collect = listemp.stream().map(Employee::getName).collect(Collectors.joining(","));
+        System.out.println(collect);
+
+        String collect1 = listemp.stream().map(Employee::getName).collect(Collectors.joining(",", "{", "}"));
+        System.out.println(collect1);
+
+    }
+
+    @Test
+    public void stringToList() {
+        String strArr = "q,w,e,r";
+
+        List<String> collect = Arrays.stream(strArr.split(",")).map(s -> s.trim()).collect(Collectors.toList());
+        System.out.println(collect);
+    }
+
+    @Test
+    public void guaiguai(){
+        //虚拟数据
+        List<Employee> listemp = DataUtils.getListEmployee();
+
+        //超级怪
+        Map<String, Map<Double, List<Employee>>> collect4 = listemp.stream().collect(Collectors.groupingBy((Employee::getName), Collectors.groupingBy((Employee::getMoney))));
+        System.out.println(collect4);
+    }
+
+
+
+    //排序
+    @Test
+    public void sort(){
+        List<Employee> listemp = DataUtils.getListEmployee();
+        List<Map.Entry<Double, List<Employee>>> list = listemp.stream()
+                .collect(Collectors.groupingBy(Employee::getMoney))
+                .entrySet()
+                .stream()
+                .sorted((s1, s2) -> -Double.compare(s1.getKey(), s2.getKey()))
+                .collect(Collectors.toList());
+        int index = 1;
+        for (Map.Entry<Double, List<Employee>> entry : list) {
+            System.out.print("名次:" + index + "\t分数:" + entry.getKey() + "\t名字");
+            entry.getValue().forEach((s) -> System.out.print("  " + s.getName()));
+            System.out.println();
+            index++;
+        }
+    }
+
+    //并列排序
+    /**
+     * 按照money排序 --- 使用Java 8；并列排名跳到下一名
+     */
+    @Test
+    public void doubleSort() {
+        List<Employee> listemp = DataUtils.getListEmployee();
+        List<Map.Entry<Double, List<Employee>>> list = listemp.stream()
+                .collect(Collectors.groupingBy(Employee::getMoney))
+                .entrySet()
+                .stream()
+                .sorted((s1, s2) -> -Double.compare(s1.getKey(), s2.getKey()))
+                .collect(Collectors.toList());
+        int index = 1;
+        for (Map.Entry<Double, List<Employee>> entry : list) {
+            System.out.print("名次:" + index + "\t分数:" + entry.getKey() + "\t名字");
+            entry.getValue().forEach((s) -> System.out.print("  " + s.getName()));
+            System.out.println();
+            index = index + entry.getValue().size();
+        }
+    }
+
+
+    /**
+     * 按照多条件排序 --- 使用Java 8；并列排名跳到下一名
+     */
+    @Test
+    public void func4() {
+        List<Employee> listemp = DataUtils.getListEmployee();
+        // students.sort((h1, h2) -> {
+        //     // 排名相同，年龄正序排序
+        //     if (Double.compare(h1.getScore(), h2.getScore()) == 0) {
+        //         return Double.compare(h1.getAge(), h2.getAge());
+        //     }
+        //     return -Double.compare(h1.getScore(), h2.getScore());
+        // });
+        listemp.sort(Comparator.comparing(Employee::getMoney).reversed().thenComparing(Employee::getAget));
+        // students.forEach(System.out::println);
+        int index = 0;
+        int count = 0;
+        double lastScore = -1;
+        Map<Integer, Employee> rankMap = new HashMap<>(5);
+        for (int i = 0; i < listemp.size(); i++) {
+            Employee s = listemp.get(i);
+            System.out.println(s.toString() + "，lastScore：" + lastScore + "，count：" + count + "，index：" + index);
+            // 如果成绩和上一名的成绩不相同,那么排名+1
+            if (Double.compare(lastScore, s.getMoney()) != 0) {
+                lastScore = s.getMoney();
+                index = index + 1 + count;
+                count = 0;
+            } else {
+                // 分数相同，如果年龄不同，排名+1
+                if (Double.compare(listemp.get(i - 1).getAget(), s.getAget()) != 0) {
+                    index = index + 1 + count;
+                    count = 0;
+                } else {
+                    // 重复数+1
+                    count++;
+                }
+            }
+            s.setIndex(index);
+            System.out.println(s.toString() + "，lastScore：" + lastScore + "，count：" + count + "，index：" + index);
+            System.out.println("****************");
+            rankMap.put(i, s);
+        }
+        for (Integer key : rankMap.keySet()) {
+            System.out.println(rankMap.get(key));
+        }
+    }
+
+
+    //简便排序
+    @Test
+    public void simple8sort(){
+        List<Employee> listemp = DataUtils.getListEmployee();
+        listemp.sort(Comparator.comparing(Employee::getMoney).reversed().thenComparing(Employee::getMoney));
+        for(Employee e: listemp){
+            System.out.println(e);
+        }
+    }
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

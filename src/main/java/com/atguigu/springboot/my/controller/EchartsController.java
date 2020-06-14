@@ -32,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ec")
-@Api(value="es",description="图表控制层")
+@Api(value = "es", description = "图表控制层")
 public class EchartsController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -52,7 +52,8 @@ public class EchartsController {
 //        System.out.println(id);
         List<WeightVo> weightVo = weightMapper.getWeightByList();
         System.out.println(weightVo);
-        for (WeightVo wei: weightVo) {
+        String sbc = "nisdf";
+        for (WeightVo wei : weightVo) {
             System.out.println(wei.getUsername());
         }
         PaageVo<WeightVo> pv = new PaageVo<>();
@@ -60,6 +61,7 @@ public class EchartsController {
         pv.setTotalPage(100);
         pv.setRows(1);
         List list = new ArrayList();
+
         JSONArray jsonObject4 = JSONArray.fromObject(weightVo);
         MessageBean mb = new MessageBean();
         mb.setCode(0);
@@ -67,14 +69,14 @@ public class EchartsController {
         mb.setData(pv);
         model.addAttribute("name", "hello");
         ModelAndView mv = new ModelAndView("DataEcharts");
-        mv.addObject("mb",mb);
+        mv.addObject("mb", mb);
         return mv;
     }
 
     @PostMapping("/initEchars")
     public MessageBean initEchars() {
 
-        List<String> dateList = imitData.loopDateaddOne(100,"20190101","yyyyMMdd");
+        List<String> dateList = imitData.loopDateaddOne(100, "20190101", "yyyyMMdd");
         InitEcharsDto initDto = new InitEcharsDto();
         initDto.setText("玫瑰图表");
         initDto.setDataViewFlag(true);
@@ -129,14 +131,14 @@ public class EchartsController {
         sBean1.setMarkLineflag(true);
         sBean1.setMarkPointflag(true);
         sBean1.setYAxisIndex(0);
-        List<String> roseDate = imitData.RandomData(5000,8000,1,"");
+        List<String> roseDate = imitData.RandomData(5000, 8000, 1, "");
         sBean1.setData(roseDate);
         sBean2.setDataName("玫瑰百分比");
         sBean2.setSeriestype("line");
         sBean2.setMarkLineflag(true);
         sBean2.setMarkPointflag(true);
         sBean2.setYAxisIndex(1);
-        List<String> rosePercentDate = imitData.RandomData(5000,5000,1,"");
+        List<String> rosePercentDate = imitData.RandomData(5000, 5000, 1, "");
         sBean2.setData(rosePercentDate);
         seriesList.add(sBean1);
         seriesList.add(sBean2);
@@ -175,22 +177,22 @@ public class EchartsController {
 //        }
         logger.info("进入自定义配置图表接口");
         MessageBean mb = new MessageBean();
-        logger.info("接受到数据："+str);
+        logger.info("接受到数据：" + str);
         InitEcharsDto initEcharsDto = imitEHelp.InitEcharsData();
         mb.setCode(0);
         mb.setMessage("成功");
         mb.setData(initEcharsDto);
         String json = "";
-        try{
+        try {
             json = JacksonUtil.toJson(mb);
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             logger.error("myEchartstwo()对象转json异常");
             e.printStackTrace();
         }
         try {
-            MessageBean mbcopy = JacksonUtil.readValue(json,MessageBean.class);
+            MessageBean mbcopy = JacksonUtil.readValue(json, MessageBean.class);
             System.out.println(mbcopy.getCode());
-            InitEcharsDto initEcharsDtoCopy = JacksonUtil.readValue(JacksonUtil.toJson(mbcopy.getData()),InitEcharsDto.class);
+            InitEcharsDto initEcharsDtoCopy = JacksonUtil.readValue(JacksonUtil.toJson(mbcopy.getData()), InitEcharsDto.class);
             System.out.println(initEcharsDtoCopy.getText());
 //            LinkedHashMap linmap = (LinkedHashMap)mbcopy.getData();
         } catch (IOException e) {
@@ -199,25 +201,25 @@ public class EchartsController {
         }
 
         ModelAndView mv = new ModelAndView("DataEcharts");
-        logger.info(str!=null?"最终json数据:"+str:"最终json数据:"+json);
-        mv.addObject("mb",str!=null?str:json);
-        mv.addObject("initEcharsDto",initEcharsDto);
+        logger.info(str != null ? "最终json数据:" + str : "最终json数据:" + json);
+        mv.addObject("mb", str != null ? str : json);
+        mv.addObject("initEcharsDto", initEcharsDto);
         return mv;
     }
 
     @RequestMapping(value = "/myEchartspie")
     public ModelAndView myEchartspie(String str) {
         logger.info("进入自定义配置图表接口");
-        logger.info("接受到数据："+str);
+        logger.info("接受到数据：" + str);
         MessageBean mb = new MessageBean();
         InitEcharsDto initEcharsDto = imitEHelp.InitEcharsPieData();
         mb.setCode(0);
         mb.setMessage("成功");
         mb.setData(initEcharsDto);
         String json = "";
-        try{
+        try {
             json = JacksonUtil.toJson(mb);
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             logger.error("myEchartstwo()对象转json异常");
             e.printStackTrace();
         }
@@ -234,9 +236,9 @@ public class EchartsController {
 //        }
 
         ModelAndView mv = new ModelAndView("DataEcharts");
-        logger.info(str!=null?"最终json数据:"+str:"最终json数据:"+json);
-        mv.addObject("mb",str!=null?str:json);
-        mv.addObject("initEcharsDto",initEcharsDto);
+        logger.info(str != null ? "最终json数据:" + str : "最终json数据:" + json);
+        mv.addObject("mb", str != null ? str : json);
+        mv.addObject("initEcharsDto", initEcharsDto);
         return mv;
     }
 
@@ -244,16 +246,16 @@ public class EchartsController {
     @RequestMapping(value = "/myEchartshash")
     public ModelAndView myEchartshash(HashMap map) {
         logger.info("进入自定义配置图表接口");
-        logger.info("接受到数据："+map);
+        logger.info("接受到数据：" + map);
         MessageBean mb = new MessageBean();
         InitEcharsDto initEcharsDto = imitEHelp.InitEcharsPieData();
         mb.setCode(0);
         mb.setMessage("成功");
         mb.setData(initEcharsDto);
         String json = "";
-        try{
+        try {
             json = JacksonUtil.toJson(mb);
-        }catch (JsonProcessingException e){
+        } catch (JsonProcessingException e) {
             logger.error("myEchartstwo()对象转json异常");
             e.printStackTrace();
         }
@@ -270,9 +272,9 @@ public class EchartsController {
 //        }
 
         ModelAndView mv = new ModelAndView("DataEcharts");
-        logger.info(map!=null?"最终json数据:"+map:"最终json数据:"+json);
-        mv.addObject("mb",json);
-        mv.addObject("initEcharsDto",initEcharsDto);
+        logger.info(map != null ? "最终json数据:" + map : "最终json数据:" + json);
+        mv.addObject("mb", json);
+        mv.addObject("initEcharsDto", initEcharsDto);
         return mv;
     }
 

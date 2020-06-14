@@ -46,7 +46,9 @@ public class TestRedis {
         operations.set("502", user);
         Thread.sleep(500);
         boolean exists=redisTemplate.hasKey("502");
-
+        if(redisTemplate.hasKey("aaa")) {
+            System.out.println(redisTemplate.opsForValue().get("aaa"));
+        }
         if(exists){
             System.out.println(redisTemplate.opsForValue().get("502"));
         }else{

@@ -38,7 +38,7 @@ public class OptionalTest {
     public static void main(String[] args){
 
         //判断非空
-        //util();
+//        util();
 
         //对象的filter
         optional_filter();
@@ -60,7 +60,6 @@ public class OptionalTest {
         }else{
             System.out.println("为空");
         }
-
         Optional.ofNullable(usernew).ifPresent(u->{
             usernew.setName("梁光春");
         });
@@ -98,9 +97,13 @@ public class OptionalTest {
         System.out.println();
 
         System.out.println("........多重过滤..........");
-        String stt = "Rocky xx Rocky";
+        String stt = "RockyCC xx Rocky";
         Optional<String> optt = Optional.of(stt);
         Optional<String> opttResult = optt.filter(e -> e.length()==14).filter(e->e.endsWith("Rocky"));
+        Optional<String> opttResult2 = optt.filter(e -> e.length()==16).filter(e->e.startsWith("RockyCC"));
+        if(opttResult2.isPresent()){
+            System.out.println("optResult2:"+opttResult2.get());
+        }
         if(opttResult.isPresent()){
             System.out.println(opttResult.get());
         }else{
